@@ -1,0 +1,27 @@
+[
+  {
+    "plant_id": "plant_01",
+    "name": "Lavande",
+    "height_cm": 60,
+    "density": "medium",
+    "color": "purple",
+    "zone_hint": "foreground_left",
+    "style_tags": ["mediterranean", "natural"]
+  },
+  {
+    "plant_id": "plant_02",
+    "name": "Olivier",
+    "height_cm": 250,
+    "density": "low",
+    "zone_hint": "background_center",
+    "style_tags": ["mediterranean", "modern"]
+  },
+  {
+    "plant_id": "plant_03",
+    "name": "Romarin",
+    "height_cm": 80,
+    "density": "medium",
+    "zone_hint": "foreground_right",
+    "style_tags": ["mediterranean"]
+  }
+]

@@ -1,0 +1,232 @@
+{
+  "input_image": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/data/garden.jpg",
+  "final_image": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/final_garden.png",
+  "metadata": {
+    "description": "fleuri",
+    "style": "moderne",
+    "taille": "petit",
+    "plant_count": 10,
+    "climat": "mediterraneen",
+    "exposition": "plein_soleil",
+    "budget": "eleve",
+    "entretien": "eleve",
+    "region": "France",
+    "sol": "neutre",
+    "elements": [],
+    "exported_at": "2026-02-10T20:07:25.611316",
+    "total_plants": 10
+  },
+  "global_context": "moderne garden",
+  "plants": [
+    {
+      "plant_id": "plant_01",
+      "name": "Haie méditerranéenne mixte fleurie",
+      "type": "arbuste",
+      "bbox": [
+        80,
+        280,
+        203,
+        360
+      ],
+      "centroid": [
+        141,
+        320
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_01.png",
+      "zone_hint": "middle_left",
+      "prompt_used": "Add a realistic Haie méditerranéenne mixte fleurie planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 0,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_02",
+      "name": "Haie fleurie caduque",
+      "type": "arbuste",
+      "bbox": [
+        263,
+        201,
+        386,
+        281
+      ],
+      "centroid": [
+        324,
+        241
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_02.png",
+      "zone_hint": "middle_center",
+      "prompt_used": "Add a realistic Haie fleurie caduque planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 1,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_03",
+      "name": "Jardin sec méditerranéen",
+      "type": "arbuste",
+      "bbox": [
+        326,
+        258,
+        449,
+        338
+      ],
+      "centroid": [
+        387,
+        298
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_03.png",
+      "zone_hint": "foreground_right",
+      "prompt_used": "Add a realistic Jardin sec méditerranéen planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 2,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_04",
+      "name": "Haie fleurie semi persistante tons rouges blanc",
+      "type": "arbuste",
+      "bbox": [
+        59,
+        237,
+        182,
+        317
+      ],
+      "centroid": [
+        120,
+        277
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_04.png",
+      "zone_hint": "background_left",
+      "prompt_used": "Add a realistic Haie fleurie semi persistante tons rouges blanc planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 3,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_05",
+      "name": "Copie de 'rosa banksiae 'lutea'",
+      "type": "arbuste",
+      "bbox": [
+        233,
+        338,
+        356,
+        418
+      ],
+      "centroid": [
+        294,
+        378
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_05.png",
+      "zone_hint": "background_center",
+      "prompt_used": "Add a realistic Copie de 'rosa banksiae 'lutea' planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 4,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_06",
+      "name": "Rosmarinus officinalis 'bonifacio'",
+      "type": "arbuste",
+      "bbox": [
+        29,
+        281,
+        152,
+        361
+      ],
+      "centroid": [
+        90,
+        321
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_06.png",
+      "zone_hint": "foreground_left",
+      "prompt_used": "Add a realistic Rosmarinus officinalis 'bonifacio' planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 5,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_07",
+      "name": "Haie de Photinia",
+      "type": "arbuste",
+      "bbox": [
+        382,
+        250,
+        505,
+        330
+      ],
+      "centroid": [
+        443,
+        290
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_07.png",
+      "zone_hint": "middle_right",
+      "prompt_used": "Add a realistic Haie de Photinia planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 6,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_08",
+      "name": "Prunus laurocerasus 'otto luyken'",
+      "type": "arbuste",
+      "bbox": [
+        376,
+        307,
+        499,
+        387
+      ],
+      "centroid": [
+        437,
+        347
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_08.png",
+      "zone_hint": "background_center",
+      "prompt_used": "Add a realistic Prunus laurocerasus 'otto luyken' planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 7,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_09",
+      "name": "Rosmarinus officinalis 'baie de douarnenez'",
+      "type": "arbuste",
+      "bbox": [
+        448,
+        276,
+        571,
+        356
+      ],
+      "centroid": [
+        509,
+        316
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_09.png",
+      "zone_hint": "foreground_center",
+      "prompt_used": "Add a realistic Rosmarinus officinalis 'baie de douarnenez' planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 8,
+      "status": "placed"
+    },
+    {
+      "plant_id": "plant_10",
+      "name": "Rosmarinus officinalis 'joyce de baggio'",
+      "type": "arbuste",
+      "bbox": [
+        202,
+        338,
+        325,
+        418
+      ],
+      "centroid": [
+        263,
+        378
+      ],
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plant_10.png",
+      "zone_hint": "foreground_right",
+      "prompt_used": "Add a realistic Rosmarinus officinalis 'joyce de baggio' planted in the ground inside the masked area. Photorealistic. Match lighting and perspective. Natural shadows on grass. Do not add any text, labels, circles, or overlays. Do not blur. Keep the rest of the image unchanged.",
+      "editable": true,
+      "layer_order": 9,
+      "status": "placed"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "use_mock": false,
+  "white_pct": 100.0,
+  "used_fallback": false,
+  "used_mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plantable_mask.png",
+  "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plantable_mask.png",
+  "prompt": "Transform this garden into a well-designed landscaped garden. Multiple flowerbeds and planting borders. Photorealistic. No text, no labels, no overlays.  CONSTRAINTS: Keep camera perspective identical. Only modify the masked zones.  RAG: Color palette: purple. Use these plants (as many as possible): Lavande, Olivier, Romarin. Add them clearly in the masked areas.",
+  "prompt_preview": "Transform this garden into a well-designed landscaped garden. Multiple flowerbeds and planting borders. Photorealistic. No text, no labels, no overlays.  CONSTRAINTS: Keep camera perspective identical...",
+  "steps": 30,
+  "guidance": 35,
+  "seed": 42,
+  "mode": "Redesign",
+  "preserve_base": true,
+  "force_full_mask": true,
+  "mask_too_large": true,
+  "rag_plants_used": [
+    "Lavande",
+    "Olivier",
+    "Romarin"
+  ],
+  "white_pct_bin": 100.0,
+  "mask_bin_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai/outputs/masks/plantable_mask_bin.png"
+}

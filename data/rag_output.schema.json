@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RAG Output Schema",
+  "description": "Contrat entre le RAG et le module image_generation",
+  "type": "object",
+  "required": ["metadata", "garden"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Contexte global de la requête utilisateur",
+      "required": ["style", "season", "climate"],
+      "properties": {
+        "style": {
+          "type": "string",
+          "description": "Style du jardin (potager, moderne, méditerranéen, etc.)",
+          "examples": ["potager", "moderne", "mediterraneen", "zen"]
+        },
+        "season": {
+          "type": "string",
+          "description": "Saison cible (printemps, ete, automne, hiver, toutes_saisons)",
+          "examples": ["printemps", "ete", "automne", "hiver", "toutes_saisons"]
+        },
+        "climate": {
+          "type": "string",
+          "description": "Climat de la région (tempere, mediterraneen, tropical, continental)",
+          "examples": ["tempere", "mediterraneen", "tropical", "continental"]
+        },
+        "sun_exposure": {
+          "type": "string",
+          "description": "Exposition solaire (plein_soleil, mi_ombre, ombre)",
+          "examples": ["plein_soleil", "mi_ombre", "ombre"]
+        },
+        "water_constraint": {
+          "type": "string",
+          "description": "Contrainte d'arrosage (faible, moyen, fort)",
+          "examples": ["faible", "moyen", "fort"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Description libre de l'utilisateur",
+          "examples": ["fleuri", "coloré", "verdoyant"]
+        }
+      }
+    },
+    "garden": {
+      "type": "array",
+      "description": "Liste des plantes recommandées",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["plant_id", "name", "type", "zone_hint"],
+        "properties": {
+          "plant_id": {
+            "type": "string",
+            "description": "Identifiant unique de la plante",
+            "examples": ["plant_01", "plant_02"]
+          },
+          "name": {
+            "type": "string",
+            "description": "Nom botanique ou commun",
+            "examples": ["Lavandula angustifolia", "Lavande"]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type de plante",
+            "enum": ["fleur", "arbuste", "arbre", "vivace", "couvre_sol", "graminee"]
+          },
+          "height_cm": {
+            "type": "integer",
+            "description": "Hauteur adulte en cm",
+            "minimum": 5,
+            "maximum": 5000
+          },
+          "width_cm": {
+            "type": "integer",
+            "description": "Largeur adulte en cm",
+            "minimum": 5,
+            "maximum": 5000
+          },
+          "density": {
+            "type": "string",
+            "description": "Densité du feuillage",
+            "enum": ["low", "medium", "high"]
+          },
+          "colors": {
+            "type": "object",
+            "description": "Couleurs de la plante",
+            "properties": {
+              "flower": {
+                "type": "string",
+                "examples": ["purple", "pink", "white", "yellow"]
+              },
+              "foliage": {
+                "type": "string",
+                "examples": ["green", "dark_green", "silver"]
+              }
+            }
+          },
+          "season": {
+            "type": "string",
+            "description": "Saison de floraison/intérêt",
+            "examples": ["printemps", "ete", "automne", "hiver", "toutes_saisons"]
+          },
+          "zone_hint": {
+            "type": "string",
+            "description": "Placement suggéré dans l'image",
+            "enum": [
+              "foreground_left",
+              "foreground_center",
+              "foreground_right",
+              "midground_left",
+              "midground_center",
+              "midground_right",
+              "background_left",
+              "background_center",
+              "background_right"
+            ]
+          },
+          "style_tags": {
+            "type": "array",
+            "description": "Tags de style",
+            "items": {
+              "type": "string"
+            },
+            "examples": [["mediterranean", "natural"], ["modern", "minimal"]]
+          },
+          "visual_signature": {
+            "type": "string",
+            "description": "Description visuelle détaillée (optionnel)",
+            "examples": ["Fleurs violettes en épis, feuillage gris-vert aromatique"]
+          },
+          "image_refs": {
+            "type": "array",
+            "description": "URLs d'images de référence (optionnel)",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "description": "Justification du choix par le RAG",
+            "examples": ["Adapté au climat tempéré, fleurit au printemps"]
+          }
+        }
+      }
+    }
+  }
+}

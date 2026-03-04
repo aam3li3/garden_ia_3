@@ -1,0 +1,291 @@
+{
+  "metadata": {
+    "description": "fleuri",
+    "style": "moderne",
+    "taille": "petit",
+    "plant_count": 10,
+    "climat": "mediterraneen",
+    "exposition": "plein_soleil",
+    "budget": "eleve",
+    "entretien": "eleve",
+    "region": "France",
+    "sol": "neutre",
+    "elements": [],
+    "exported_at": "2026-02-10T20:07:25.611316",
+    "total_plants": 10
+  },
+  "garden": [
+    {
+      "plant_id": "plant_01",
+      "name": "Haie méditerranéenne mixte fleurie",
+      "type": "arbuste",
+      "height_cm": 90,
+      "width_cm": 120,
+      "density": "high",
+      "color": "multiples",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "toutes_saisons",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "middle_left",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Offre une variété de couleurs et ajoute un élément structurant au jardin"
+    },
+    {
+      "plant_id": "plant_02",
+      "name": "Haie fleurie caduque",
+      "type": "arbuste",
+      "height_cm": 150,
+      "width_cm": 80,
+      "density": "medium",
+      "color": "rouge",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "middle_center",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Ajoute une touche de couleur vive au jardin"
+    },
+    {
+      "plant_id": "plant_03",
+      "name": "Jardin sec méditerranéen",
+      "type": "arbuste",
+      "height_cm": 60,
+      "width_cm": 100,
+      "density": "low",
+      "color": "gris",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "ete",
+      "water_needs": "faible",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "foreground_right",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Ajoute une touche de texture au jardin"
+    },
+    {
+      "plant_id": "plant_04",
+      "name": "Haie fleurie semi persistante tons rouges blanc",
+      "type": "arbuste",
+      "height_cm": 200,
+      "width_cm": 200,
+      "density": "high",
+      "color": "rouge blanc",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "background_left",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Offre une grande variété de couleurs et ajoute un élément structurant au jardin"
+    },
+    {
+      "plant_id": "plant_05",
+      "name": "Copie de 'rosa banksiae 'lutea'",
+      "type": "arbuste",
+      "height_cm": 200,
+      "width_cm": 150,
+      "density": "high",
+      "color": "jaune",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "background_center",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Ajoute une touche de couleur chaude au jardin"
+    },
+    {
+      "plant_id": "plant_06",
+      "name": "Rosmarinus officinalis 'bonifacio'",
+      "type": "arbuste",
+      "height_cm": 80,
+      "width_cm": 100,
+      "density": "medium",
+      "color": "bleu",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "toutes_saisons",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "foreground_left",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Ajoute une touche de couleur bleue au jardin"
+    },
+    {
+      "plant_id": "plant_07",
+      "name": "Haie de Photinia",
+      "type": "arbuste",
+      "height_cm": 150,
+      "width_cm": 200,
+      "density": "high",
+      "color": "rouge",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "middle_right",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Offre une touche de couleur vive au jardin"
+    },
+    {
+      "plant_id": "plant_08",
+      "name": "Prunus laurocerasus 'otto luyken'",
+      "type": "arbuste",
+      "height_cm": 300,
+      "width_cm": 200,
+      "density": "high",
+      "color": "vert",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "toutes_saisons",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "background_center",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Ajoute une touche de couleur verte au jardin"
+    },
+    {
+      "plant_id": "plant_09",
+      "name": "Rosmarinus officinalis 'baie de douarnenez'",
+      "type": "arbuste",
+      "height_cm": 80,
+      "width_cm": 100,
+      "density": "medium",
+      "color": "bleu",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "toutes_saisons",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "foreground_center",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Ajoute une touche de couleur bleue au jardin"
+    },
+    {
+      "plant_id": "plant_10",
+      "name": "Rosmarinus officinalis 'joyce de baggio'",
+      "type": "arbuste",
+      "height_cm": 80,
+      "width_cm": 100,
+      "density": "medium",
+      "color": "bleu",
+      "climate": "mediterraneen",
+      "sun_exposure": "plein_soleil",
+      "season": "toutes_saisons",
+      "water_needs": "eleve",
+      "soil_preference": "neutre",
+      "maintenance_level": "eleve",
+      "price_range": "eleve",
+      "zone_hint": "foreground_right",
+      "style_tags": [
+        "moderne"
+      ],
+      "reason": "Ajoute une touche de couleur bleue au jardin"
+    }
+  ],
+  "image_report": [
+    {
+      "plant_id": "plant_01",
+      "plant_name": "Haie méditerranéenne mixte fleurie",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_02",
+      "plant_name": "Haie fleurie caduque",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_03",
+      "plant_name": "Jardin sec méditerranéen",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_04",
+      "plant_name": "Haie fleurie semi persistante tons rouges blanc",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_05",
+      "plant_name": "Copie de 'rosa banksiae 'lutea'",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_06",
+      "plant_name": "Rosmarinus officinalis 'bonifacio'",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_07",
+      "plant_name": "Haie de Photinia",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_08",
+      "plant_name": "Prunus laurocerasus 'otto luyken'",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_09",
+      "plant_name": "Rosmarinus officinalis 'baie de douarnenez'",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    },
+    {
+      "plant_id": "plant_10",
+      "plant_name": "Rosmarinus officinalis 'joyce de baggio'",
+      "status": "not_found",
+      "message": "Aucune image trouvée"
+    }
+  ]
+}

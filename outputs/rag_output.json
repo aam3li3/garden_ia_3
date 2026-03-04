@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "generated_at": "2026-02-12T14:47:43.427549",
+    "description": "fleuri",
+    "style": "potager",
+    "climat": "tempere"
+  },
+  "garden": [
+    {
+      "plant_id": "plant_06",
+      "name": "Pieris japonica 'katsura'",
+      "type": "arbuste",
+      "height_cm": 150,
+      "width_cm": 80,
+      "density": "medium",
+      "color": "white",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "moyen",
+      "zone_hint": "background_right",
+      "style_tags": [
+        "potager",
+        "spring"
+      ],
+      "reason": "Un arbuste de pieris japonica qui fleurit en printemps avec des fleurs blanches"
+    },
+    {
+      "plant_id": "plant_01",
+      "name": "Iris germanica 'apricot frost'",
+      "type": "fleur",
+      "height_cm": 75,
+      "width_cm": 60,
+      "density": "high",
+      "color": "orange",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "moyen",
+      "zone_hint": "foreground_center",
+      "style_tags": [
+        "potager",
+        "spring"
+      ],
+      "reason": "Beaux fleurs d'iris de couleur orange qui fleurissent au printemps"
+    },
+    {
+      "plant_id": "plant_03",
+      "name": "Pot plastique gallia",
+      "type": "vivace",
+      "height_cm": 25,
+      "width_cm": 40,
+      "density": "low",
+      "color": "green",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "toutes_saisons",
+      "water_needs": "faible",
+      "zone_hint": "foreground_right",
+      "style_tags": [
+        "potager",
+        "modern"
+      ],
+      "reason": "Un pot vivace de petite taille pour ajouter de la couleur au jardin"
+    },
+    {
+      "plant_id": "plant_02",
+      "name": "Petit potager contemporain 2 m x 1m",
+      "type": "couvre_sol",
+      "height_cm": 60,
+      "width_cm": 80,
+      "density": "medium",
+      "color": "green",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "toutes_saisons",
+      "water_needs": "moyen",
+      "zone_hint": "middle_center",
+      "style_tags": [
+        "potager",
+        "modern"
+      ],
+      "reason": "Un potager contemporain idéal pour une utilisation intensive"
+    },
+    {
+      "plant_id": "plant_04",
+      "name": "Photinia fraseri 'red robin' haie",
+      "type": "arbuste",
+      "height_cm": 150,
+      "width_cm": 80,
+      "density": "medium",
+      "color": "red",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "moyen",
+      "zone_hint": "background_left",
+      "style_tags": [
+        "potager",
+        "hedge"
+      ],
+      "reason": "Une haie de photinia rouge qui ajoute une touche de couleur au jardin"
+    }
+  ]
+}
