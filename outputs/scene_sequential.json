@@ -1,0 +1,235 @@
+{
+  "mode": "sequential",
+  "input_image": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/data/garden.jpg",
+  "final_image": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/final_garden.png",
+  "metadata": {
+    "description": "fleuri",
+    "style": "moyen_age",
+    "taille": "petit",
+    "plant_count": 15,
+    "climat": "tempere",
+    "exposition": "plein_soleil",
+    "budget": "eleve",
+    "entretien": "faible",
+    "region": "France",
+    "sol": "neutre",
+    "elements": [],
+    "exported_at": "2026-03-11T12:00:00",
+    "total_plants": 15
+  },
+  "global_context": "moyen_age garden",
+  "plants": [
+    {
+      "plant_id": "plant_06",
+      "name": "Alcea rosea",
+      "type": "vivace",
+      "height_cm": 200,
+      "width_cm": 80,
+      "density": "medium",
+      "color": "rose",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "ete",
+      "water_needs": "moyen",
+      "zone_hint": "background_center",
+      "style_tags": [
+        "moyen_age"
+      ],
+      "reason": "Rose trémière emblématique des jardins anciens."
+    },
+    {
+      "plant_id": "plant_01",
+      "name": "Rosa banksiae 'lutea'",
+      "type": "arbuste",
+      "height_cm": 300,
+      "width_cm": 200,
+      "density": "medium",
+      "color": "jaune",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "faible",
+      "zone_hint": "middle_center",
+      "style_tags": [
+        "moyen_age"
+      ],
+      "reason": "Rosier grimpant ancien très utilisé dans les jardins historiques."
+    },
+    {
+      "plant_id": "plant_04",
+      "name": "Achillea millefolium",
+      "type": "vivace",
+      "height_cm": 80,
+      "width_cm": 60,
+      "density": "medium",
+      "color": "blanc",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "ete",
+      "water_needs": "faible",
+      "zone_hint": "middle_left",
+      "style_tags": [
+        "moyen_age"
+      ],
+      "reason": "Plante sauvage et médicinale typique des jardins historiques."
+    },
+    {
+      "plant_id": "plant_05",
+      "name": "Iris germanica",
+      "type": "vivace",
+      "height_cm": 90,
+      "width_cm": 60,
+      "density": "medium",
+      "color": "violet",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "printemps",
+      "water_needs": "faible",
+      "zone_hint": "middle_right",
+      "style_tags": [
+        "moyen_age"
+      ],
+      "reason": "Plante ornementale traditionnelle très utilisée dans les jardins européens."
+    },
+    {
+      "plant_id": "plant_02",
+      "name": "Lavandula angustifolia",
+      "type": "vivace",
+      "height_cm": 60,
+      "width_cm": 60,
+      "density": "dense",
+      "color": "violet",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "ete",
+      "water_needs": "faible",
+      "zone_hint": "foreground_center",
+      "style_tags": [
+        "moyen_age"
+      ],
+      "reason": "Plante aromatique classique des jardins médiévaux."
+    },
+    {
+      "plant_id": "plant_03",
+      "name": "Salvia officinalis",
+      "type": "vivace",
+      "height_cm": 70,
+      "width_cm": 60,
+      "density": "medium",
+      "color": "violet",
+      "climate": "tempere",
+      "sun_exposure": "plein_soleil",
+      "season": "ete",
+      "water_needs": "faible",
+      "zone_hint": "foreground_left",
+      "style_tags": [
+        "moyen_age"
+      ],
+      "reason": "Plante médicinale très utilisée dans les jardins de monastères."
+    }
+  ],
+  "steps": [
+    {
+      "index": 0,
+      "plant_id": "plant_06",
+      "name": "Alcea rosea",
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/masks/plant_plant_06.png",
+      "raw_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_01_plant_06_raw.png",
+      "composite_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_01_plant_06.png",
+      "bbox": [
+        329,
+        162,
+        355,
+        215
+      ],
+      "prompt": "Add a single Alcea rosea planted naturally in the ground, ONLY inside the white masked area. perennial plant with lush foliage and seasonal flowers. Dominant color: rose. Photorealistic, match existing garden lighting, perspective and shadows. Roots firmly in the soil, no floating effect, no dark halo at base. Maintain moyen_age garden aesthetic. CRITICAL: Do NOT modify ANYTHING outside the masked area. No text, no labels, no people.",
+      "seed": 42,
+      "strength": 0.75
+    },
+    {
+      "index": 1,
+      "plant_id": "plant_01",
+      "name": "Rosa banksiae 'lutea'",
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/masks/plant_plant_01.png",
+      "raw_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_02_plant_01_raw.png",
+      "composite_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_02_plant_01.png",
+      "bbox": [
+        316,
+        249,
+        369,
+        329
+      ],
+      "prompt": "Add a single Rosa banksiae 'lutea' planted naturally in the ground, ONLY inside the white masked area. Rosa banksiae Lutea climbing rose, cascading clusters of tiny pale yellow double flowers, glossy dark green leaves, thornless arching stems, 200cm tall. Dominant color: jaune. Photorealistic, match existing garden lighting, perspective and shadows. Roots firmly in the soil, no floating effect, no dark halo at base. Maintain moyen_age garden aesthetic. Harmonize with existing plants: Alcea rosea. CRITICAL: Do NOT modify ANYTHING outside the masked area. No text, no labels, no people.",
+      "seed": 43,
+      "strength": 0.75
+    },
+    {
+      "index": 2,
+      "plant_id": "plant_04",
+      "name": "Achillea millefolium",
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/masks/plant_plant_04.png",
+      "raw_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_03_plant_04_raw.png",
+      "composite_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_03_plant_04.png",
+      "bbox": [
+        99,
+        239,
+        140,
+        294
+      ],
+      "prompt": "Add a single Achillea millefolium planted naturally in the ground, ONLY inside the white masked area. perennial plant with lush foliage and seasonal flowers. Dominant color: blanc. Photorealistic, match existing garden lighting, perspective and shadows. Roots firmly in the soil, no floating effect, no dark halo at base. Maintain moyen_age garden aesthetic. Harmonize with existing plants: Alcea rosea, Rosa banksiae 'lutea'. CRITICAL: Do NOT modify ANYTHING outside the masked area. No text, no labels, no people.",
+      "seed": 44,
+      "strength": 0.75
+    },
+    {
+      "index": 3,
+      "plant_id": "plant_05",
+      "name": "Iris germanica",
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/masks/plant_plant_05.png",
+      "raw_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_04_plant_05_raw.png",
+      "composite_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_04_plant_05.png",
+      "bbox": [
+        546,
+        238,
+        584,
+        295
+      ],
+      "prompt": "Add a single Iris germanica planted naturally in the ground, ONLY inside the white masked area. perennial plant with lush foliage and seasonal flowers. Dominant color: violet. Photorealistic, match existing garden lighting, perspective and shadows. Roots firmly in the soil, no floating effect, no dark halo at base. Maintain moyen_age garden aesthetic. Harmonize with existing plants: Alcea rosea, Rosa banksiae 'lutea', Achillea millefolium. CRITICAL: Do NOT modify ANYTHING outside the masked area. No text, no labels, no people.",
+      "seed": 45,
+      "strength": 0.75
+    },
+    {
+      "index": 4,
+      "plant_id": "plant_02",
+      "name": "Lavandula angustifolia",
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/masks/plant_plant_02.png",
+      "raw_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_05_plant_02_raw.png",
+      "composite_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_05_plant_02.png",
+      "bbox": [
+        305,
+        341,
+        379,
+        415
+      ],
+      "prompt": "Add a single Lavandula angustifolia planted naturally in the ground, ONLY inside the white masked area. perennial plant with lush foliage and seasonal flowers. Dominant color: violet. Photorealistic, match existing garden lighting, perspective and shadows. Roots firmly in the soil, no floating effect, no dark halo at base. Maintain moyen_age garden aesthetic. Harmonize with existing plants: Alcea rosea, Rosa banksiae 'lutea', Achillea millefolium, Iris germanica. CRITICAL: Do NOT modify ANYTHING outside the masked area. No text, no labels, no people.",
+      "seed": 46,
+      "strength": 0.75
+    },
+    {
+      "index": 5,
+      "plant_id": "plant_03",
+      "name": "Salvia officinalis",
+      "mask_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/masks/plant_plant_03.png",
+      "raw_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_06_plant_03_raw.png",
+      "composite_path": "/Users/amelie/Desktop/cours PGE2 S2/clinique ia - projet paysagea/garden_ai 3/outputs/steps/step_06_plant_03.png",
+      "bbox": [
+        86,
+        317,
+        152,
+        394
+      ],
+      "prompt": "Add a single Salvia officinalis planted naturally in the ground, ONLY inside the white masked area. Rosmarinus officinalis rosemary shrub, dense needle-like silver-green aromatic leaves, small violet-blue flowers along woody stems, rounded mounding habit, 80cm tall. Photorealistic, match existing garden lighting, perspective and shadows. Roots firmly in the soil, no floating effect, no dark halo at base. Maintain moyen_age garden aesthetic. Harmonize with existing plants: Alcea rosea, Rosa banksiae 'lutea', Achillea millefolium, Iris germanica, Lavandula angustifolia. CRITICAL: Do NOT modify ANYTHING outside the masked area. No text, no labels, no people.",
+      "seed": 47,
+      "strength": 0.75
+    }
+  ]
+}

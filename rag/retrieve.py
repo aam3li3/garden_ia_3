@@ -4,56 +4,60 @@ Retrieval + filtres + scoring.
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+import unicodedata
 
 if TYPE_CHECKING:
     from .schemas import Plant, Query
 
-# Ordre eau : faible < moyen < fort
-WATER_ORDER = {"faible": 0, "moyen": 1, "fort": 2}
 
-
-def _water_compatible(plant_water: str, constraint: str) -> bool:
-    """
-    water_constraint = max accepté.
-    Si constraint "faible" -> seulement "faible"
-    Si "moyen" -> "faible" ou "moyen"
-    Si "fort" -> tous
-    """
-    if not constraint:
-        return True
-    constraint = constraint.lower().strip()
-    plant_water = (plant_water or "").lower().strip()
-    if not plant_water:
-        return True
-    c_level = WATER_ORDER.get(constraint, 1)
-    p_level = WATER_ORDER.get(plant_water, 1)
-    return p_level <= c_level
+def _normalize(s: str) -> str:
+    """Normalise pour comparaison souple : accents, majuscules, espaces."""
+    s = unicodedata.normalize("NFD", (s or "").lower().strip())
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    return s.replace(" ", "_").replace("-", "_")
 
 
 def _climate_match(plant_climate: str, query_climat: str) -> bool:
     if not query_climat:
         return True
-    p = (plant_climate or "").lower().strip()
-    q = (query_climat or "").lower().strip()
-    return p == q
+    return _normalize(plant_climate) == _normalize(query_climat)
 
 
 def _sun_match(plant_sun: str, query_sun: str) -> bool:
     if not query_sun:
         return True
-    p = (plant_sun or "").lower().strip()
-    q = (query_sun or "").lower().strip()
-    return p == q
+    # Gérer les variantes : "plein_soleil", "Plein soleil", "soleil"
+    p = _normalize(plant_sun)
+    q = _normalize(query_sun)
+    if p == q:
+        return True
+    # "soleil" matche "plein_soleil"
+    if q in p or p in q:
+        return True
+    return False
 
 
 def _season_match(plant_season: str, query_season: str) -> bool:
     if not query_season:
         return True
-    p = (plant_season or "").lower().strip()
-    q = (query_season or "").lower().strip()
+    p = _normalize(plant_season)
+    q = _normalize(query_season)
     if p == "toutes_saisons":
         return True
     return p == q
+
+
+# Ordre eau : faible < moyen < fort
+WATER_ORDER = {"faible": 0, "moyen": 1, "modere": 1, "fort": 2, "eleve": 2}
+
+
+def _water_compatible(plant_water: str, constraint: str) -> bool:
+    WATER_ORDER_LOCAL = WATER_ORDER
+    if not constraint:
+        return True
+    c_level = WATER_ORDER_LOCAL.get(_normalize(constraint), 1)
+    p_level = WATER_ORDER_LOCAL.get(_normalize(plant_water), 1)
+    return p_level <= c_level
 
 
 def apply_filters(
@@ -65,8 +69,8 @@ def apply_filters(
     for p in plants:
         if not _water_compatible(p.water_needs, query.water_constraint):
             continue
-        if not _climate_match(p.climate, query.climat):
-            continue
+        # if not _climate_match(p.climate, query.climat):  # désactivé
+        #     continue
         if not _sun_match(p.sun_exposure, query.sun_exposure):
             continue
         if not _season_match(p.season, query.season):
