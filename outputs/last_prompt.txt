@@ -1,1 +1,0 @@
-Transform this garden into a well-designed landscaped garden. Multiple flowerbeds and planting borders. Photorealistic. No text, no labels, no overlays.  CONSTRAINTS: Keep camera perspective identical. Only modify the masked zones.  RAG: Color palette: purple. Use these plants (as many as possible): Lavande, Olivier, Romarin. Add them clearly in the masked areas.
