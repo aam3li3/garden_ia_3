@@ -44,7 +44,19 @@ def inpaint(
     if use_mock:
         print("   [MOCK MODE: skipping image generation API]")
         from .mock_provider import inpaint_mock
-        inpaint_mock(image_path, mask_path, prompt, out_path, seed=allowed.get("seed"))
+        mock_kw = {
+            k: kwargs[k]
+            for k in ("ref_image_path", "plant_name", "bbox")
+            if k in kwargs and kwargs[k] is not None
+        }
+        inpaint_mock(
+            image_path,
+            mask_path,
+            prompt,
+            out_path,
+            seed=allowed.get("seed"),
+            **mock_kw,
+        )
         return
 
     try:
@@ -54,7 +66,18 @@ def inpaint(
         if "402" in str(e) or "Insufficient credits" in str(e):
             print("   [BFL 402 Insufficient credits → fallback MOCK]")
             from .mock_provider import inpaint_mock
-            inpaint_mock(image_path, mask_path, prompt, out_path, **kwargs)
+            inpaint_mock(
+                image_path,
+                mask_path,
+                prompt,
+                out_path,
+                seed=allowed.get("seed"),
+                **{
+                    k: v
+                    for k, v in kwargs.items()
+                    if k in ("ref_image_path", "plant_name", "bbox") and v is not None
+                },
+            )
         else:
             raise
 
@@ -133,6 +156,7 @@ def generate_scene(
             external_plantable_zones=external_zones,
             debug=debug,
             max_plants=kwargs.get("max_plants", 6),
+            bbox_overrides=kwargs.get("bbox_overrides"),
         )
         # Relight nuit éventuel
         final_path = Path(scene["final_image"])

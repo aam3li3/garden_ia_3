@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Union, List, Dict
+from typing import Any, Union, List, Dict, Optional
 
 import json
 import os
@@ -12,8 +12,8 @@ from .blend_utils import composite_with_mask
 from .mask_manager import MaskManager, MaskResult
 from .scene_generator import inpaint
 from .utils_rag import load_rag
-from .prompt_builder import build_single_plant_inpaint_prompt, build_global_context
-from .prompt_with_image import build_prompt_with_image_ref
+from .prompt_builder import build_global_context
+from .prompt_with_image import build_prompt_with_image_ref, resolve_rag_plant_image_path
 from .config import BFL_STEPS, BFL_GUIDANCE, BFL_STRENGTH
 
 
@@ -50,6 +50,7 @@ def generate_garden_plant_by_plant(
     external_plantable_zones: list[dict] | None = None,
     debug: bool = True,
     max_plants: int = 6,
+    bbox_overrides: Optional[List[Optional[List[int]]]] = None,
 ) -> dict:
     """
     Pipeline séquentiel plante par plante.
@@ -90,19 +91,30 @@ def generate_garden_plant_by_plant(
     steps: List[Dict[str, Any]] = []
 
     global_context = build_global_context(metadata) if metadata else ""
+    project_root = Path(__file__).resolve().parent.parent
 
     for idx, plant in enumerate(plants_sorted):
         plant_id = plant.get("plant_id", f"plant_{idx+1:02d}")
         print(f"🌱 Étape {idx+1}/{len(plants_sorted)} — {plant.get('name', plant_id)}")
 
-        # 1. Masque individuel
-        mask_result: MaskResult = mask_manager.create_individual_plant_mask(
-            image_path=current_img_path,
-            plant=plant,
-            plant_index=idx,
-            already_placed=already_placed,
-            plantable_zones_mask=None,  # external_plantable_zones peut être branché plus tard
-        )
+        # 1. Masque individuel (bbox utilisateur si fournie pour cette étape)
+        override = None
+        if bbox_overrides and idx < len(bbox_overrides):
+            override = bbox_overrides[idx]
+        if override is not None and len(override) == 4:
+            mask_result = mask_manager.create_mask_from_bbox(
+                current_img_path,
+                list(map(int, override)),
+                plant_id,
+            )
+        else:
+            mask_result = mask_manager.create_individual_plant_mask(
+                image_path=current_img_path,
+                plant=plant,
+                plant_index=idx,
+                already_placed=already_placed,
+                plantable_zones_mask=None,
+            )
         mask_path = Path(mask_result.mask_path)
         already_placed.append(mask_result.bbox)
 
@@ -113,8 +125,9 @@ def generate_garden_plant_by_plant(
             metadata=metadata,
             surrounding_context=surrounding,
             iteration=idx,
-            project_root=Path(__file__).resolve().parent.parent,
+            project_root=project_root,
         )
+        ref_img = resolve_rag_plant_image_path(plant, project_root)
 
         # 3. Appel BFL inpaint sur l'image courante
         raw_out = steps_dir / f"step_{idx+1:02d}_{plant_id}_raw.png"
@@ -132,6 +145,8 @@ def generate_garden_plant_by_plant(
             steps=BFL_STEPS,
             guidance=BFL_GUIDANCE,
             strength=strength,
+            ref_image_path=str(ref_img) if ref_img else None,
+            plant_name=plant.get("name") or plant_id,
         )
 
         # 4. Post-fusion : preserve hors masque, à partir de l'image d'entrée de l'étape
@@ -157,6 +172,7 @@ def generate_garden_plant_by_plant(
                 "prompt": prompt,
                 "seed": seed,
                 "strength": strength,
+                "zone_hint": plant.get("zone_hint", ""),
             }
         )
 

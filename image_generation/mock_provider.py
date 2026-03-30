@@ -13,6 +13,40 @@ import numpy as np
 from PIL import Image, ImageFilter
 
 
+def _composite_ref_into_mask(
+    img_arr: np.ndarray,
+    mask_use: np.ndarray,
+    ref_path: Path,
+) -> np.ndarray:
+    """
+    Colle l'image de référence RAG (redimensionnée au bbox du masque) dans la zone blanche.
+    Utilisé en MOCK quand BFL n'est pas disponible, pour afficher de vraies photos de plantes.
+    """
+    ys, xs = np.where(mask_use >= 128)
+    if len(xs) == 0:
+        return img_arr
+    x1, x2 = int(xs.min()), int(xs.max())
+    y1, y2 = int(ys.min()), int(ys.max())
+    bw = max(1, x2 - x1 + 1)
+    bh = max(1, y2 - y1 + 1)
+
+    ref = Image.open(ref_path).convert("RGB")
+    ref_resized = ref.resize((bw, bh), Image.Resampling.LANCZOS)
+    ref_arr = np.array(ref_resized).astype(np.float32)
+
+    roi = img_arr[y1 : y2 + 1, x1 : x2 + 1].astype(np.float32)
+    sub = mask_use[y1 : y2 + 1, x1 : x2 + 1].astype(np.float32)
+    sub_pil = Image.fromarray(sub.astype(np.uint8))
+    sub_pil = sub_pil.filter(ImageFilter.GaussianBlur(radius=2))
+    sub_f = (np.array(sub_pil).astype(np.float32) / 255.0)[..., np.newaxis]
+    sub_f = np.clip(sub_f, 0.0, 1.0)
+
+    blended = roi * (1.0 - sub_f) + ref_arr * sub_f
+    out = img_arr.copy()
+    out[y1 : y2 + 1, x1 : x2 + 1] = blended.astype(np.uint8)
+    return out
+
+
 def _fake_vegetation_inpaint(
     img: np.ndarray,
     mask: np.ndarray,
@@ -76,10 +110,12 @@ def inpaint_mock(
     Faux inpaint : applique texture végétale dans la zone masque/bbox.
     AUCUN TEXTE dans l'image finale.
     """
-    print("   [MOCK MODE] Génération visuelle simulée (texture végétale)")
     src = Path(image_path).resolve()
     dst = Path(out_path).resolve()
     dst.parent.mkdir(parents=True, exist_ok=True)
+
+    ref_raw = kwargs.get("ref_image_path")
+    ref_path = Path(ref_raw).resolve() if ref_raw else None
 
     img = Image.open(src).convert("RGB")
     img_arr = np.array(img)
@@ -104,7 +140,14 @@ def inpaint_mock(
             return
 
     seed = kwargs.get("seed", 42)
-    result = _fake_vegetation_inpaint(img_arr, mask_use, seed=seed)
+
+    if ref_path is not None and ref_path.is_file():
+        print(f"   [MOCK MODE] Collage image RAG dans le masque : {ref_path.name}")
+        result = _composite_ref_into_mask(img_arr, mask_use, ref_path)
+    else:
+        print("   [MOCK MODE] Génération visuelle simulée (texture végétale)")
+        result = _fake_vegetation_inpaint(img_arr, mask_use, seed=seed)
+
     Image.fromarray(result).save(dst)
     if plant_name:
         print(f"   [MOCK] Zone modifiée (sans label) : {plant_name}")

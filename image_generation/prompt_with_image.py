@@ -11,9 +11,34 @@ Utilisé par plant_by_plant_generator.py si use_image_refs=True.
 from __future__ import annotations
 
 import base64
-import os
 from pathlib import Path
 from typing import Any
+
+
+def resolve_rag_plant_image_path(plant: dict[str, Any], project_root: str | Path | None) -> Path | None:
+    """
+    Trouve l'image de référence RAG pour une plante :
+    - clé image_path dans le JSON (souvent data/rag_images/plant_XX.jpg)
+    - sinon data/rag_images/{plant_id}.jpg / .png
+    """
+    root = Path(project_root).resolve() if project_root else Path.cwd()
+    candidates: list[Path] = []
+
+    ip = (plant.get("image_path") or "").strip()
+    if ip:
+        p = Path(ip)
+        candidates.append(p if p.is_absolute() else (root / ip))
+
+    pid = str(plant.get("plant_id") or "").strip()
+    if pid:
+        rag_dir = root / "data" / "rag_images"
+        for ext in (".jpg", ".jpeg", ".png", ".webp"):
+            candidates.append(rag_dir / f"{pid}{ext}")
+
+    for c in candidates:
+        if c.is_file():
+            return c.resolve()
+    return None
 
 
 def _encode_image(image_path: str | Path) -> tuple[str, str]:
@@ -90,30 +115,24 @@ def build_prompt_with_image_ref(
     Si image_path existe et est valide → décrit via Claude Vision → prompt très précis.
     Sinon → fallback sur prompt_builder.build_single_plant_inpaint_prompt().
     """
-    from .prompt_builder import build_single_plant_inpaint_prompt, _get_visual
+    from .prompt_builder import _get_visual
 
     name = plant.get("name") or plant.get("species") or "garden plant"
-    image_path = plant.get("image_path", "")
-
-    # Résoudre le chemin relatif depuis la racine du projet
-    if image_path and project_root:
-        full_path = Path(project_root) / image_path
-    elif image_path:
-        full_path = Path(image_path)
-    else:
-        full_path = None
+    full_path = resolve_rag_plant_image_path(plant, project_root)
 
     # Obtenir la description visuelle
     visual_description = ""
     if full_path and full_path.exists():
-        print(f"[prompt_with_image] 🖼️  Image trouvée pour {name}, appel Claude Vision...")
+        print(f"[prompt_with_image] 🖼️  Image trouvée pour {name} ({full_path.name}), appel Claude Vision...")
         visual_description = describe_plant_image(full_path, name)
         if visual_description:
             print(f"[prompt_with_image] ✅ Description: {visual_description[:80]}...")
-    else:
-        # Fallback sur la visual DB
+    if not visual_description.strip():
         visual_description = _get_visual(plant)
-        print(f"[prompt_with_image] ℹ️  Pas d'image pour {name}, fallback visual DB.")
+        if full_path:
+            print(f"[prompt_with_image] ℹ️  Claude indisponible ou vide → fallback visual DB pour {name}.")
+        else:
+            print(f"[prompt_with_image] ℹ️  Pas d'image RAG pour {name}, fallback visual DB.")
 
     # Construction du prompt
     color = (plant.get("color") or "").replace("_", " ")

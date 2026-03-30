@@ -4,6 +4,7 @@ jardin_complet.json est chargé automatiquement au démarrage.
 """
 from __future__ import annotations
 
+import base64
 import json
 import shutil
 import sys
@@ -11,6 +12,7 @@ import tempfile
 import time
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import streamlit as st
 
@@ -18,9 +20,11 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from image_generation.scene_generator import generate_scene
 from image_generation.scene_generator_v2 import dispatch_generation
 from image_generation.bfl_provider import has_bfl_key
 from image_generation.utils_rag import load_rag
+from ui.mask_editor import EDITOR_BBOX_PARAM, render_mask_editor
 
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 DATA_DIR    = PROJECT_ROOT / "data"
@@ -31,6 +35,7 @@ for d in [OUTPUTS_DIR, UI_INPUTS]:
 SAMPLE_IMAGE   = DATA_DIR / "garden.jpg"
 JARDIN_COMPLET = DATA_DIR / "jardin_complet.json"
 RAG_PATH       = OUTPUTS_DIR / "current_rag_selection.json"
+SCENE_SEQ_JSON = OUTPUTS_DIR / "scene_sequential.json"
 
 
 def inject_css():
@@ -63,6 +68,96 @@ def inject_css():
     </style>""", unsafe_allow_html=True)
 
 
+def _get_steps_list() -> list[dict[str, Any]]:
+    """Étapes en session ou rechargées depuis le JSON séquentiel sur disque."""
+    steps = list(st.session_state.get("steps", []))
+    if steps:
+        return steps
+    if SCENE_SEQ_JSON.exists():
+        with open(SCENE_SEQ_JSON, encoding="utf-8") as fh:
+            return json.load(fh).get("steps", [])
+    return []
+
+
+def _sorted_steps(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(steps, key=lambda s: int(s.get("index", 0)))
+
+
+def _shared_generation_kwargs(
+    image_path: Path | str,
+    *,
+    time_of_day: str,
+    night_int: float,
+    max_plants: int,
+) -> dict[str, Any]:
+    """Paramètres communs à dispatch_generation / generate_scene."""
+    return {
+        "image_path": image_path,
+        "rag_json_path": st.session_state["rag_path"],
+        "outputs_dir": OUTPUTS_DIR,
+        "time_of_day": "night" if time_of_day == "Nuit" else "day",
+        "night_light_intensity": night_int,
+        "max_plants": max_plants,
+        "debug": True,
+    }
+
+
+def _decode_editor_bbox_updates(raw_b64: str) -> list | None:
+    try:
+        decoded = base64.b64decode(str(raw_b64).encode("ascii")).decode("utf-8")
+        data = json.loads(decoded)
+        return data if isinstance(data, list) else None
+    except (ValueError, json.JSONDecodeError, TypeError):
+        return None
+
+
+def _merge_editor_updates_into_steps(updates: list) -> bool:
+    by_pid = {
+        str(u["plant_id"]): u["bbox"]
+        for u in updates
+        if isinstance(u, dict) and "plant_id" in u and "bbox" in u
+    }
+    if not by_pid:
+        return False
+    steps = _get_steps_list()
+    if not steps:
+        return False
+    changed = False
+    for s in steps:
+        pid = str(s.get("plant_id", ""))
+        if pid in by_pid:
+            s["bbox"] = by_pid[pid]
+            changed = True
+    if changed:
+        st.session_state["steps"] = steps
+    return changed
+
+
+def _apply_editor_b64_to_steps(b64_str: str) -> bool:
+    updates = _decode_editor_bbox_updates(b64_str.strip())
+    if updates is None:
+        return False
+    return _merge_editor_updates_into_steps(updates)
+
+
+def _apply_editor_bbox_from_url():
+    """Reçoit les bboxes repositionnées depuis l’éditeur (query param après rechargement)."""
+    if EDITOR_BBOX_PARAM not in st.query_params:
+        return
+    raw = st.query_params[EDITOR_BBOX_PARAM]
+    if isinstance(raw, list):
+        raw = raw[0]
+    updates = _decode_editor_bbox_updates(str(raw))
+    if updates is None:
+        st.error("Paramètre d’éditeur invalide (editor_bbox).")
+        st.query_params.pop(EDITOR_BBOX_PARAM, None)
+        st.rerun()
+        return
+    _merge_editor_updates_into_steps(updates)
+    st.query_params.pop(EDITOR_BBOX_PARAM, None)
+    st.rerun()
+
+
 def _auto_load_jardin():
     """Charge jardin_complet.json automatiquement au premier chargement."""
     if st.session_state.get("rag_ready"):
@@ -91,6 +186,7 @@ def main():
 
     # Chargement auto jardin_complet.json dès le démarrage
     _auto_load_jardin()
+    _apply_editor_bbox_from_url()
 
     # ── SIDEBAR ─────────────────────────────────────────────
     with st.sidebar:
@@ -121,7 +217,8 @@ def main():
         st.session_state["mode"] = (
             "sequential" if "Séquentiel" in mode_label else "global"
         )
-        max_plants  = st.slider("Nb max de plantes", 1, 10, 6)
+        rag_count = len(st.session_state.get("selected_plants", [])) or 15
+        max_plants  = st.slider("Nb max de plantes", 1, rag_count, rag_count)
         time_of_day = st.select_slider("Heure", options=["Jour","Nuit"])
         night_int   = (
             st.slider("Intensité nuit", 0.0, 1.0, 0.5)
@@ -134,14 +231,20 @@ def main():
         up_rag = st.file_uploader("Autre JSON RAG", type=["json"])
         if up_rag:
             try:
-                tmp = Path(tempfile.mktemp(suffix=".json"))
-                tmp.write_bytes(up_rag.read())
-                _, plants = load_rag(tmp)
-                shutil.copy2(tmp, RAG_PATH)
-                st.session_state["rag_ready"]       = True
-                st.session_state["rag_path"]        = str(RAG_PATH)
-                st.session_state["selected_plants"] = [p["name"] for p in plants]
-                st.success(f"✅ {len(plants)} plantes depuis {up_rag.name}")
+                with tempfile.NamedTemporaryFile(
+                    suffix=".json", delete=False
+                ) as tmp:
+                    tmp.write(up_rag.read())
+                    tmp_path = Path(tmp.name)
+                try:
+                    _, plants = load_rag(tmp_path)
+                    shutil.copy2(tmp_path, RAG_PATH)
+                    st.session_state["rag_ready"] = True
+                    st.session_state["rag_path"] = str(RAG_PATH)
+                    st.session_state["selected_plants"] = [p["name"] for p in plants]
+                    st.success(f"✅ {len(plants)} plantes depuis {up_rag.name}")
+                finally:
+                    tmp_path.unlink(missing_ok=True)
             except Exception as e:
                 st.error(f"Erreur : {e}")
 
@@ -186,16 +289,13 @@ def main():
             msg.text(f"⏳ Génération {'séquentielle' if mode=='sequential' else 'globale'}...")
             prog.progress(10)
             try:
-                scene = dispatch_generation(
-                    image_path            = image_path,
-                    rag_json_path         = st.session_state["rag_path"],
-                    outputs_dir           = OUTPUTS_DIR,
-                    mode                  = mode,
-                    time_of_day           = "night" if time_of_day=="Nuit" else "day",
-                    night_light_intensity = night_int,
-                    max_plants            = max_plants,
-                    debug                 = True,
+                gkw = _shared_generation_kwargs(
+                    image_path,
+                    time_of_day=time_of_day,
+                    night_int=night_int,
+                    max_plants=max_plants,
                 )
+                scene = dispatch_generation(**gkw, mode=mode)
                 st.session_state["steps"] = scene.get("steps", [])
                 prog.progress(100)
                 msg.text("✅ Génération terminée !")
@@ -209,8 +309,8 @@ def main():
         final = OUTPUTS_DIR / (
             "final_garden_night.png" if time_of_day=="Nuit" else "final_garden.png"
         )
-        tab_r, tab_ab, tab_steps, tab_mask = st.tabs(
-            ["✨ Résultat","🔍 Avant/Après","🌿 Étapes","🗺️ Masque"])
+        tab_r, tab_ab, tab_steps, tab_mask, tab_editor = st.tabs(
+            ["✨ Résultat", "🔍 Avant/Après", "🌿 Étapes", "🗺️ Masque", "✏️ Éditeur"])
 
         with tab_r:
             if final.exists():
@@ -236,11 +336,7 @@ def main():
                 st.info("Générez d'abord une image.")
 
         with tab_steps:
-            steps = st.session_state.get("steps", [])
-            if not steps:
-                seq_p = OUTPUTS_DIR / "scene_sequential.json"
-                if seq_p.exists():
-                    steps = json.load(open(seq_p)).get("steps", [])
+            steps = _get_steps_list()
             if steps:
                 st.write(f"**{len(steps)} plantes générées :**")
                 for s in steps:
@@ -267,6 +363,78 @@ def main():
                 st.image(str(dbg), use_container_width=True)
             else:
                 st.info("Le masque apparaîtra après la génération.")
+
+        with tab_editor:
+            steps = _get_steps_list()
+            if steps and image_path and Path(str(image_path)).exists():
+                st.write(
+                    "**Glisse les rectangles colorés** sur le canevas (souris ou doigt), puis **Appliquer** ; "
+                    "ensuite **Regénérer**. Dans l’aperçu intégré (Cursor, etc.), ouvre l’app dans **Safari/Chrome** "
+                    "sur `localhost` si le rechargement est bloqué — ou utilise le **secours** sous le canevas."
+                )
+                if st.session_state.get("mode") != "sequential":
+                    st.warning(
+                        "Le repositionnement s’applique au **mode séquentiel**. "
+                        "Repasse en séquentiel dans la barre latérale pour regénérer avec des bboxes."
+                    )
+                render_mask_editor(
+                    base_image_path=final if final.exists() else image_path,
+                    steps=_sorted_steps(steps),
+                )
+                with st.expander("📌 Secours : appliquer sans recharger la page", expanded=False):
+                    st.caption(
+                        "Si le bouton vert *Appliquer* ne fait rien : après avoir cliqué dessus, "
+                        "un code est souvent copié automatiquement — sinon refais *Appliquer* puis colle ici (Ctrl+V)."
+                    )
+                    manual_b64 = st.text_input(
+                        "Code positions (base64)",
+                        key="editor_bbox_manual_fallback",
+                        placeholder="Colle le code ici…",
+                        label_visibility="collapsed",
+                    )
+                    if st.button("Enregistrer les positions collées", key="editor_bbox_manual_apply"):
+                        if _apply_editor_b64_to_steps(manual_b64):
+                            st.success("Positions enregistrées — clique **Regénérer**.")
+                            st.rerun()
+                        elif manual_b64.strip():
+                            st.error("Code illisible ou vide.")
+                regen = st.button(
+                    "🔄 Regénérer le jardin (positions actuelles des étapes)",
+                    key="regen_bbox_steps",
+                    disabled=(
+                        st.session_state.get("mode") != "sequential"
+                        or not st.session_state.get("rag_ready")
+                        or not can_go
+                    ),
+                )
+                if regen:
+                    bbox_overrides = [s.get("bbox") for s in _sorted_steps(_get_steps_list())]
+                    prog = st.progress(0)
+                    msg = st.empty()
+                    msg.text("⏳ Regénération avec les bboxes ajustées…")
+                    prog.progress(15)
+                    try:
+                        gkw = _shared_generation_kwargs(
+                            image_path,
+                            time_of_day=time_of_day,
+                            night_int=night_int,
+                            max_plants=max_plants,
+                        )
+                        scene = generate_scene(
+                            **gkw,
+                            mode="sequential",
+                            bbox_overrides=bbox_overrides,
+                        )
+                        st.session_state["steps"] = scene.get("steps", [])
+                        prog.progress(100)
+                        msg.text("✅ Regénération terminée.")
+                        time.sleep(0.8)
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"❌ {e}")
+                        st.exception(e)
+            else:
+                st.info("Génère d'abord un jardin pour accéder à l'éditeur.")
 
     st.divider()
     st.caption("Garden AI v3 — Flux.1 Fill | génération plante par plante")

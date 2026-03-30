@@ -265,9 +265,35 @@ class MaskManager:
         mask_bin = np.where(mask_arr >= 128, 255, 0).astype(np.uint8)
         mask_pil = Image.fromarray(mask_bin, mode="L")
 
-        mask_path = self.masks_dir / f"plant_{plant.get('plant_id', plant_index):s}.png"
+        pid = str(plant.get("plant_id") or f"idx_{plant_index}")
+        mask_path = self.masks_dir / f"plant_{pid}.png"
         mask_pil.save(mask_path)
 
+        return MaskResult(mask_path=str(mask_path), bbox=[x1, y1, x2, y2])
+
+    def create_mask_from_bbox(
+        self,
+        image_path: Union[str, Path],
+        bbox: list[int],
+        plant_key: str,
+    ) -> MaskResult:
+        """
+        Crée un masque binaire (0/255) exactement pour la bbox donnée [x1,y1,x2,y2].
+        Utilisé quand l'utilisateur repositionne une plante dans l'éditeur.
+        """
+        img = Image.open(image_path).convert("RGB")
+        w, h = img.size
+        x1, y1, x2, y2 = bbox
+        x1 = int(max(0, min(x1, w - 2)))
+        y1 = int(max(0, min(y1, h - 2)))
+        x2 = int(max(x1 + 8, min(x2, w)))
+        y2 = int(max(y1 + 8, min(y2, h)))
+        mask = np.zeros((h, w), dtype=np.uint8)
+        mask[y1:y2, x1:x2] = 255
+        mask_pil = Image.fromarray(mask, mode="L")
+        safe = "".join(c if c.isalnum() or c in "_-" else "_" for c in plant_key)[:60]
+        mask_path = self.masks_dir / f"plant_{safe}.png"
+        mask_pil.save(mask_path)
         return MaskResult(mask_path=str(mask_path), bbox=[x1, y1, x2, y2])
 
     def create_combined_mask(

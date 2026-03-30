@@ -130,7 +130,7 @@ def load_rag(path: Union[str, Path]) -> tuple[dict, list[dict]]:
             "style_tags": plant.get("style_tags", []),
             "reason": plant.get("reason", ""),
         }
-        for k in ["soil_preference", "maintenance_level", "price_range", "colors", "visual_signature", "image_refs"]:
+        for k in ["soil_preference", "maintenance_level", "price_range", "colors", "visual_signature", "image_refs", "image_path"]:
             if k in plant and plant[k] is not None:
                 normalized[k] = plant[k]
         plants.append(normalized)

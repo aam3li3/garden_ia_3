@@ -17,6 +17,7 @@ def dispatch_generation(
     night_light_intensity: float = 0.5,
     max_plants: int = 6,
     debug: bool = True,
+    bbox_overrides: list[list[int] | None] | None = None,
 ) -> dict[str, Any]:
     return generate_scene(
         image_path=image_path,
@@ -27,4 +28,5 @@ def dispatch_generation(
         night_light_intensity=night_light_intensity,
         debug=debug,
         max_plants=max_plants,
+        bbox_overrides=bbox_overrides,
     )
